@@ -1,11 +1,10 @@
 
 resource "aws_lambda_function" "backend_lambda" {
   function_name    = var.function_name
-  role             = var.role
+  role             = var.role_arn
   handler          = var.handler
   runtime          = var.runtime
   filename         = var.filename
-#   source_code_hash = filebase64sha256()
 }
 
 # resource "aws_api_gateway_rest_api" "backend_api" {

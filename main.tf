@@ -11,12 +11,17 @@ provider "aws" {
   region = var.aws_region
 }
 
-### Lambda module 
+### IAM role module
+module "iam_role" {
+  source = "./modules/iam_role"
+}
+
+### Lambda module
 module "lambda_funciton1" {
   source = "./modules/lambda_function1"
 
   function_name = var.function_name
-  role          = var.role
+  role_arn      = module.iam_role.iam_role_arn
   handler       = var.handler
   runtime       = var.runtime
   filename      = var.filename
