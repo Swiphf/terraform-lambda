@@ -1,15 +1,16 @@
 
 resource "aws_lambda_function" "backend_lambda" {
-  function_name    = "write_user_age_to_db"
-  role             = aws_iam_role.lambda_role.arn
-  handler          = "app.lambda_handler"
-  runtime          = "python3.8"
-  filename         = "${aws_s3_bucket_object.lambda_code.bucket}/${aws_s3_bucket_object.lambda_code.key}"
+  function_name    = var.function_name
+  role             = var.role
+  handler          = var.handler
+  runtime          = var.runtime
+  filename         = var.filename
+#   source_code_hash = filebase64sha256()
 }
 
 # resource "aws_api_gateway_rest_api" "backend_api" {
 #   name = "BackendAPI"
-# }
+# } 
 
 # resource "aws_api_gateway_resource" "backend_resource" {
 #   rest_api_id = aws_api_gateway_rest_api.backend_api.id
