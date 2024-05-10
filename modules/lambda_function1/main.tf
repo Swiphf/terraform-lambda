@@ -4,7 +4,10 @@ resource "aws_lambda_function" "backend_lambda" {
   role             = var.role_arn
   handler          = var.handler
   runtime          = var.runtime
-  filename         = var.filename
+  # filename         = var.filename
+  s3_bucket = "ido-backend-lambda-dev"
+  s3_key = "lambda_function1/app.zip"
+  
 }
 
 # resource "aws_api_gateway_rest_api" "backend_api" {
