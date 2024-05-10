@@ -24,5 +24,6 @@ module "lambda_funciton1" {
   role_arn      = module.iam_role.iam_role_arn
   handler       = var.handler
   runtime       = var.runtime
-  filename      = var.filename
+  s3_bucket     = var.s3_bucket
+  s3_key        = var.s3_key
 }
