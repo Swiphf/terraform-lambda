@@ -26,4 +26,5 @@ module "lambda_funciton1" {
   runtime       = var.runtime
   s3_bucket     = var.s3_bucket
   s3_key        = var.s3_key
+  stage         = var.stage
 }

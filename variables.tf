@@ -26,3 +26,7 @@ variable "s3_key" {
 variable "runtime" {
   type = string
 }
+
+variable "stage" {
+  type = string
+}

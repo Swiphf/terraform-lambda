@@ -23,3 +23,6 @@ variable "runtime" {
   type = string
 }
 
+variable "stage" {
+  type = string
+}
