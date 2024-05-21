@@ -5,6 +5,13 @@ resource "aws_lambda_function" "backend_lambda" {
   runtime       = var.runtime
   s3_bucket     = "ido-backend-lambda-dev"
   s3_key        = "lambda_function1/app.zip"
+
+  environment {
+    variables = {
+      DB_NAME   = "your_db_name"
+      DB_HOST   = "your_db_host"
+    }
+  }
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
