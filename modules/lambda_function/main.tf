@@ -1,3 +1,11 @@
+resource "aws_lambda_layer_version" "python_lambda_layer" {
+  layer_name          = var.layer_name
+  s3_bucket           = var.layer_s3_bucket
+  s3_key              = var.layer_s3_key
+  compatible_runtimes = var.layer_compatible_runtimes
+}
+
+
 resource "aws_lambda_function" "backend_lambda" {
   function_name = var.function_name
   role          = var.role_arn
@@ -5,13 +13,17 @@ resource "aws_lambda_function" "backend_lambda" {
   runtime       = var.runtime
   s3_bucket     = "ido-backend-lambda-dev"
   s3_key        = "lambda_function1/app.zip"
+  layers        = [aws_lambda_layer_version.python_lambda_layer.arn]
 
   environment {
     variables = {
-      DB_NAME   = "your_db_name"
-      DB_HOST   = "your_db_host"
+      DB_NAME     = "psql"
+      DB_HOST     = "postgres-db-1.cvgigym0aqys.eu-west-1.rds.amazonaws.com"
+      SECRET_NAME = "db_credentials_psql"
     }
   }
+
+  depends_on = [aws_lambda_layer_version.python_lambda_layer]
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
@@ -46,7 +58,7 @@ resource "aws_api_gateway_method_settings" "api_gateway_method_settings" {
     metrics_enabled    = true
   }
 
-  depends_on = [ aws_api_gateway_rest_api.backend_api, aws_api_gateway_method.backend_method ]
+  depends_on = [aws_api_gateway_rest_api.backend_api, aws_api_gateway_method.backend_method]
 }
 
 resource "aws_api_gateway_integration" "backend_integration" {
@@ -95,12 +107,12 @@ resource "aws_iam_policy" "lambda_invoke_policy" {
   name        = "lambda-invoke-policy"
   description = "Policy to allow API Gateway to invoke Lambda functions"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": "lambda:InvokeFunction",
-        "Resource": aws_lambda_function.backend_lambda.arn
+        "Effect" : "Allow",
+        "Action" : "lambda:InvokeFunction",
+        "Resource" : aws_lambda_function.backend_lambda.arn
       }
     ]
   })

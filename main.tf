@@ -11,20 +11,20 @@ provider "aws" {
   region = var.aws_region
 }
 
-### IAM role module
-module "iam_role" {
-  source = "./modules/iam_role"
-}
-
 ### Lambda module
-module "lambda_funciton1" {
-  source = "./modules/lambda_function1"
+module "lambda_funciton" {
+  source = "./modules/lambda_function"
 
-  function_name = var.function_name
-  role_arn      = module.iam_role.iam_role_arn
-  handler       = var.handler
-  runtime       = var.runtime
-  s3_bucket     = var.s3_bucket
-  s3_key        = var.s3_key
-  stage         = var.stage
+  aws_region                = var.aws_region
+  function_name             = var.function_name
+  role_arn                  = data.aws_iam_role.lambda_role.arn
+  handler                   = var.handler
+  runtime                   = var.runtime
+  s3_bucket                 = var.s3_bucket
+  s3_key                    = var.s3_key
+  stage                     = var.stage
+  layer_name                = var.layer_name
+  layer_s3_key              = var.layer_s3_key
+  layer_compatible_runtimes = var.compatible_runtimes
+  layer_s3_bucket           = var.layer_s3_bucket
 }
